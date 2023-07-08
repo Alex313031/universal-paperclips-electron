@@ -1,0 +1,58 @@
+{
+  "electronVersion": "22.3.16",
+  "asar": true,
+  "productName": "Universal Paperclips",
+  "generateUpdatesFilesForAllChannels": false,
+  "appId": "com.alex313031.universalpaperclips",
+  "directories": {
+      "app": "./src",
+      "buildResources": "build",
+      "output": "dist"
+  },
+  "files": [ "**/*" ],
+  "extraFiles": [
+    {
+      "from": "assets/icon64.png"
+    },
+    {
+      "from": "assets/README.txt"
+    }
+  ],
+  "linux": {
+    "target": [
+      "zip",
+      "AppImage",
+      "deb"
+    ],
+    "maintainer": "Alex313031",
+    "vendor": "Alex313031",
+    "synopsis": "An incremental game about an AI created to produce paperclips. Electron native app port.",
+    "category": "Game;Media;",
+    "executableName": "universal-paperclips",
+    "artifactName": "universal-paperclips_${version}_${arch}.${ext}",
+    "desktop": {
+      "Name": "Universal Paperclips",
+      "StartupWMClass": "universal-paperclips",
+      "Keywords": "universal;paperclips;game;",
+      "Icon": "universal-paperclips"
+    }
+  },
+  "win": {
+    "target": [
+      "zip",
+      "nsis"
+    ],
+    "publisherName": "Alex313031",
+    "executableName": "universal_paperclips",
+    "artifactName": "universal_paperclips_win64_${version}_${arch}.${ext}"
+  },
+  "nsis": {
+    "shortcutName": "Universal Paperclips",
+    "artifactName": "universal_paperclips_setup_${version}_${arch}.${ext}",
+    "deleteAppDataOnUninstall": false,
+    "uninstallDisplayName": "Universal Paperclips ${version}"
+  },
+  "mac": {
+    "category": "public.app-category.game"
+  }
+}

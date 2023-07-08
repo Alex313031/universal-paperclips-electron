@@ -1,0 +1,47 @@
+{
+  "name": "universal-paperclips",
+  "appName": "universal-paperclips",
+  "productName": "Universal Paperclips",
+  "version": "0.0.2",
+  "description": "An incremental game about an AI created to produce paperclips. Electron native app port.",
+  "main": "./src/app.js",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "start": "electron ./src",
+    "winstart": "electron src",
+    "test": "npm run lint",
+    "burn": "rimraf package-lock.json && cd src && rimraf package-lock.json",
+    "clean": "rimraf dist && rimraf src/node_modules && rimraf node_modules",
+    "distclean": "rimraf dist",
+    "lint": "eslint \"src/**/*.js*\" \"src/**/*.css*\"",
+    "build": "cross-env NODE_ENV=production electron-builder --dir",
+    "dev": "cross-env QUARK_TEST=1 NODE_ENV=development electron src",
+    "buildstart": "cross-env NODE_ENV=production electron-builder --dir && ./dist/linux-unpacked/quark-player",
+    "dist": "cross-env NODE_ENV=production electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "repository": "https://github.com/Alex313031/univeral-paperclips-electron.git",
+  "author": "Alex313031 <alex313031@gmail.com>",
+  "homepage": "https://github.com/Alex313031/univeral-paperclips-electron#readme",
+  "bugs": {
+    "url": "https://github.com/Alex313031/univeral-paperclips-electron/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "asar": "3.2.0",
+    "cross-env": "7.0.3",
+    "electron": "22.3.16",
+    "electron-builder": "23.6.0",
+    "eslint": "8.42.0",
+    "rimraf": "4.4.1"
+  },
+  "dependencies": {
+    "@electron/remote": "2.0.10",
+    "electron-context-menu": "3.6.1",
+    "electron-log": "4.4.8",
+    "electron-prompt": "1.7.0",
+    "electron-store": "7.0.3"
+  }
+}
