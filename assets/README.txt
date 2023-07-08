@@ -11,3 +11,5 @@ IMPORTANT: For now, you will have to click "SAVE SLOT 1" or "SAVE SLOT 2" and
 "LOAD SLOT 1" or "LOAD SLOT 2" before closing and after launching to save/restore progress.
 
 Eventually I would like to add an auto-save feature.
+
+A good read: https://memalign.github.io/p/universal-paperclips.html
