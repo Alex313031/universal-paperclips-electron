@@ -3387,7 +3387,7 @@ function addProc(){
     if (trust>0 || swarmGifts>0){
         processors=processors+1;
         creativitySpeed = Math.log10(processors) * Math.pow(processors,1.1) + processors-1;    
-        processorsElement.innerHTML = processors;
+        processorsElement.innerHTML = processors + ' Cores';
         if (creativityOn == 1){
           displayMessage("Processor added, operations (or creativity) per sec increased")
         } else {displayMessage("Processor added, operations per sec increased")}
@@ -3403,7 +3403,7 @@ function addMem(){
     if (trust>0 || swarmGifts>0){
         displayMessage("Memory added, max operations increased");
         memory=memory+1;
-        memoryElement.innerHTML = memory;
+        memoryElement.innerHTML = memory + ' Gigabytes';
         if (humanFlag == 0){
             swarmGifts = swarmGifts - 1;
         }
@@ -4632,8 +4632,8 @@ function refresh() {
     probeNavDisplayElement.innerHTML = probeNav;
     probeSpeedDisplayElement.innerHTML = probeSpeed;
     probeTrustDisplayElement.innerHTML = probeTrust;
-    memoryElement.innerHTML = memory;
-    processorsElement.innerHTML = processors;
+    memoryElement.innerHTML = memory + ' Gigabytes';
+    processorsElement.innerHTML = processors + ' Cores';
     marginElement.innerHTML = margin.toFixed(2);
     marketingLvlElement.innerHTML = marketingLvl;
     adCostElement.innerHTML = formatWithCommas(adCost, 2);
