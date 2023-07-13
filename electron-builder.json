@@ -1,5 +1,5 @@
 {
-  "electronVersion": "22.3.16",
+  "electronVersion": "22.3.17",
   "asar": true,
   "productName": "Universal Paperclips",
   "generateUpdatesFilesForAllChannels": false,
