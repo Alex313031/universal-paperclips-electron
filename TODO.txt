@@ -1,7 +1,6 @@
 ----TODO----
 
  - Add auto-save feature
- - Update save button CSS
 
 ------------Notes-----------------
 main accent color: #000000 or grey

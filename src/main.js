@@ -6497,3 +6497,58 @@ function loadPrestige() {
         prestigeU = loadPrestige.prestigeU;
         prestigeS = loadPrestige.prestigeS;
 }    
+
+function saveToFile() {
+    save();
+
+    const saveData = {
+        saveGame: JSON.parse(localStorage.getItem("saveGame")),
+        saveProjectsUses: JSON.parse(localStorage.getItem("saveProjectsUses")),
+        saveProjectsFlags: JSON.parse(localStorage.getItem("saveProjectsFlags")),
+        saveProjectsActive: JSON.parse(localStorage.getItem("saveProjectsActive")),
+        saveStratsActive: JSON.parse(localStorage.getItem("saveStratsActive")),
+    };
+
+    const jsonData = JSON.stringify(saveData, null, 2);
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = 'saveData.json';
+    downloadLink.click();
+}
+  
+function loadFromFile() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+
+        if (!file) {
+            console.error('No file selected.');
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            const jsonData = event.target.result;
+            const saveData = JSON.parse(jsonData);
+
+            // Update localStorage with the loaded data
+            localStorage.setItem("saveGame", JSON.stringify(saveData.saveGame));
+            localStorage.setItem("saveProjectsUses", JSON.stringify(saveData.saveProjectsUses));
+            localStorage.setItem("saveProjectsFlags", JSON.stringify(saveData.saveProjectsFlags));
+            localStorage.setItem("saveProjectsActive", JSON.stringify(saveData.saveProjectsActive));
+            localStorage.setItem("saveStratsActive", JSON.stringify(saveData.saveStratsActive));
+
+            load();
+        };
+
+        reader.readAsText(file, 'utf-8');
+    });
+
+    fileInput.click();
+}
