@@ -20,16 +20,19 @@
 	Website: https://thorium.rocks/
 	From: Oklahoma, US
 
+	Developer: stignarnia
+	Role: Contributor
+	GitHub: @stignarnia
+
 /* THANKS */
 
 	Josh Mize
-	stignarnia
 	oscartbeaumont
 	electronjs
 
 /* WEBUI */
 
-	Last update: 2023/07/07
+	Last update: 2023/07/19
 	Language: English
 	Doctype: HTML5, CSS, JSON
 	IDE: Geany

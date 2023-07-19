@@ -2,7 +2,7 @@
   "name": "universal-paperclips",
   "appName": "universal-paperclips",
   "productName": "Universal Paperclips",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An incremental game about an AI created to produce paperclips. Electron native app port.",
   "main": "./app.js",
   "engines": {
