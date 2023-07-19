@@ -8,7 +8,7 @@ function threnodyLoaded()
 var threnodyAudio;
 
 function loadThrenody() {
-    threnodyAudio.src = "test.mp3";
+    threnodyAudio.src = "threnody.mp3";
     threnodyAudio.addEventListener('canplaythrough', threnodyLoaded);
 }
 
