@@ -14,7 +14,7 @@ function createWindow () {
       resizable: true,
       maximizable: true,
       width: 1024,
-      height: 768,
+      height: 900,
       icon: path.join(__dirname, 'icon64.png'),
       webPreferences: {
         nodeIntegration: false,
