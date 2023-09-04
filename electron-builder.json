@@ -1,11 +1,11 @@
 {
-  "electronVersion": "22.3.18",
+  "electronVersion": "22.3.23",
   "asar": true,
   "productName": "Universal Paperclips",
-  "generateUpdatesFilesForAllChannels": false,
   "appId": "com.alex313031.universalpaperclips",
+  "generateUpdatesFilesForAllChannels": false,
   "directories": {
-      "app": "./src",
+      "app": "src",
       "buildResources": "build",
       "output": "dist"
   },
@@ -40,7 +40,8 @@
   "win": {
     "target": [
       "zip",
-      "nsis"
+      "nsis",
+      "portable"
     ],
     "publisherName": "Alex313031",
     "executableName": "universal_paperclips",
@@ -51,6 +52,9 @@
     "artifactName": "universal_paperclips_setup_${version}_${arch}.${ext}",
     "deleteAppDataOnUninstall": false,
     "uninstallDisplayName": "Universal Paperclips ${version}"
+  },
+  "portable": {
+    "artifactName": "universal_paperclips_portable_${version}_${arch}.${ext}"
   },
   "mac": {
     "category": "public.app-category.game"

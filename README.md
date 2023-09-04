@@ -4,7 +4,7 @@
 
 <div align="center">
   <h1>Universal Paperclips! - Electron App</h1>
-  This is an Electron port of the original <a href="https://en.wikipedia.org/wiki/Universal_Paperclips">Universal Paperclips game</a>, by New York University's <a href="https://www.franklantz.net/about-1">Frank Lantz</a>.
+  This is an Electron port of the original <a href="https://en.wikipedia.org/wiki/Universal_Paperclips">Universal Paperclips game</a> by New York University's <a href="https://www.franklantz.net/about-1">Frank Lantz</a>.
   <br/>
   There is also the original <a href="https://www.decisionproblem.com/paperclips/index.html">Web version</a>, as well as <a href="https://apps.apple.com/us/app/universal-paperclips/id1300634274">iOS</a> and <a href="https://play.google.com/store/apps/details?id=com.everybodyhouse.paperclipsuniquetest">Android</a> versions, made by Lantz.
   <br/>
