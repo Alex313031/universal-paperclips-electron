@@ -2,7 +2,7 @@
   "name": "universal-paperclips",
   "appName": "universal-paperclips",
   "productName": "Universal Paperclips",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "An incremental game about an AI created to produce paperclips. Electron native app port.",
   "main": "./src/app.js",
   "engines": {
@@ -32,7 +32,7 @@
   "devDependencies": {
     "asar": "3.2.0",
     "cross-env": "7.0.3",
-    "electron": "22.3.23",
+    "electron": "22.3.27",
     "electron-builder": "23.6.0",
     "eslint": "8.42.0",
     "rimraf": "3.0.2"
