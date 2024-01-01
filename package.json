@@ -38,7 +38,7 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@electron/remote": "2.0.12",
+    "@electron/remote": "2.1.1",
     "electron-context-menu": "3.6.1",
     "electron-log": "4.4.8",
     "electron-prompt": "1.7.0",
