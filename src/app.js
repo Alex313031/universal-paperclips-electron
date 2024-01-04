@@ -1,6 +1,5 @@
-const { app, BrowserWindow, Menu, nativeTheme } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const electronLog = require('electron-log');
-const electronStore = require('electron-store');
 const contextMenu = require('electron-context-menu');
 const path = require('path');
 const url = require('url');
@@ -8,21 +7,22 @@ const url = require('url');
 // Initialize Electron remote module
 require('@electron/remote/main').initialize();
 
-// Get app version from package.json
-var appVersion = app.getVersion();
-// Get Electron versions
-var electronVersion = process.versions.electron;
-var chromeVersion = process.versions.chrome;
-var nodeVersion = process.versions.node;
-var v8Version = process.versions.v8;
+// Get app details from package.json
+const appName = app.getName();
+const appVersion = app.getVersion();
+// Export Electron versions
+const electronVer = process.versions.electron;
+const chromeVer = process.versions.chrome;
+const nodeVer = process.versions.node;
+const v8Ver = process.versions.v8;
 
 // Globally export what OS we are on
-const isLinux = process.platform === 'linux';
+//const isLinux = process.platform === 'linux';
 const isWin = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
 
-function createWindow () {
-  let mainWindow = new BrowserWindow({
+function createWindow() {
+  const mainWindow = new BrowserWindow({
     title: 'Universal Paperclips',
     resizable: true,
     maximizable: true,
@@ -38,14 +38,11 @@ function createWindow () {
       experimentalFeatures: true,
       webviewTag: true,
       devTools: true,
-      javascript: true,
-      plugins: true,
-      enableRemoteModule: true,
       // Preload before renderer processes
       preload: path.join(__dirname, 'preload.js')
     }
   });
-  require("@electron/remote/main").enable(mainWindow.webContents);
+  require('@electron/remote/main').enable(mainWindow.webContents);
   Menu.setApplicationMenu(Menu.buildFromTemplate([
   {
     role: 'fileMenu',
@@ -114,7 +111,7 @@ function createWindow () {
       { role: 'reload' },
       {
         label: 'Reload F5',
-        accelerator:  'F5',
+        accelerator: 'F5',
         visible: false,
         acceleratorWorksWhenHidden: true,
         click(item, focusedWindow) {
@@ -143,9 +140,10 @@ function createWindow () {
     label: 'About',
     submenu: [
       { label: 'Universal Paperclips v' + app.getVersion(), enabled: false },
-      { label: 'Created by Alex313031',
+      {
+        label: 'Created by Alex313031',
         click() {
-          new BrowserWindow({width: 1024, height: 768, useContentSize: true}).loadURL('https://github.com/Alex313031/Thorium_NetLog_Viewer#readme');
+          new BrowserWindow({ width: 1024, height: 768, useContentSize: true }).loadURL('https://github.com/Alex313031/Thorium_NetLog_Viewer#readme');
         }
       },
       { type: 'separator' },
@@ -153,7 +151,7 @@ function createWindow () {
         label: 'View Humans.txt',
         accelerator: 'CmdorCtrl+Alt+Shift+H',
         click() {
-          const humansWindow = new BrowserWindow({width: 400, height: 450, useContentSize: true, title: "humans.txt", darkTheme: true});
+          const humansWindow = new BrowserWindow({ width: 400, height: 450, useContentSize: true, title: 'humans.txt', darkTheme: true });
           humansWindow.loadFile('./humans.txt');
           electronLog.info('Opened humans.txt :)');
         }
@@ -162,7 +160,7 @@ function createWindow () {
         label: 'View License',
         accelerator: 'CmdorCtrl+Alt+Shift+L',
         click() {
-          const licenseWindow = new BrowserWindow({width: 532, height: 632, useContentSize: true, title: "License", darkTheme: true});
+          const licenseWindow = new BrowserWindow({ width: 532, height: 632, useContentSize: true, title: 'License', darkTheme: true });
           licenseWindow.loadFile('./license.md');
           electronLog.info('Opened license.md');
         }
@@ -175,7 +173,7 @@ function createWindow () {
             width: 350,
             height: 300,
             useContentSize: true,
-            title: "About App",
+            title: 'About App',
             icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
             darkTheme: true,
             webPreferences: {
@@ -186,13 +184,10 @@ function createWindow () {
               experimentalFeatures: true,
               webviewTag: true,
               devTools: true,
-              javascript: true,
-              plugins: true,
-              enableRemoteModule: true,
-              preload: path.join(__dirname, 'preload.js'),
-            },
+              preload: path.join(__dirname, 'preload.js')
+            }
           });
-          require("@electron/remote/main").enable(aboutWindow.webContents);
+          require('@electron/remote/main').enable(aboutWindow.webContents);
           aboutWindow.loadFile('./about.html');
           electronLog.info('Opened about.html');
         }
@@ -222,7 +217,8 @@ contextMenu({
   showLookUpSelection: true,
   showSearchWithGoogle: true,
   prepend: (defaultActions, parameters, browserWindow) => [
-  { label: 'Open Link in New Window',
+  {
+    label: 'Open Link in New Window',
     // Only show it when right-clicking a link
     visible: parameters.linkURL.trim().length > 0,
     click: (linkURL) => {
@@ -238,10 +234,7 @@ contextMenu({
           sandbox: false,
           experimentalFeatures: true,
           webviewTag: true,
-          devTools: true,
-          javascript: true,
-          plugins: true,
-          enableRemoteModule: true,
+          devTools: true
         }
       });
       const toURL = parameters.linkURL;
@@ -253,12 +246,11 @@ contextMenu({
 
 app.whenReady().then(createWindow);
 
-electronLog.info('Welcome to Universal Paperclips!');
-electronLog.info('App Version: ' + [ appVersion ]);
-electronLog.info('Electron Version: ' + [ electronVersion ]);
-electronLog.info('Chromium Version: ' + [ chromeVersion ]);
-electronLog.info('NodeJS Version: ' + [ nodeVersion ]);
-electronLog.info('V8 Version: ' + [ v8Version ]);
+electronLog.info('Welcome to ' + appName + ' v' + appVersion);
+electronLog.info('Electron Version: ' + [ electronVer ]);
+electronLog.info('Chromium Version: ' + [ chromeVer ]);
+electronLog.info('NodeJS Version: ' + [ nodeVer ]);
+electronLog.info('V8 Version: ' + [ v8Ver ]);
 
 // app.commandLine.appendSwitch('enable-experimental-web-platform-features');
 app.commandLine.appendSwitch('allow-file-access-from-files');
