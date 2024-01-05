@@ -32,7 +32,7 @@
 
 /* WEBUI */
 
-	Last update: 2023/09/06
+	Last update: 2023/1/4
 	Language: English
 	Doctype: HTML5, CSS, JSON
 	IDE: Geany
