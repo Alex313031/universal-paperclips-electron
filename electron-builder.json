@@ -12,7 +12,7 @@
   "files": [ "**/*" ],
   "extraFiles": [
     {
-      "from": "assets/icon64.png"
+      "from": "assets/icon.png"
     },
     {
       "from": "assets/README.txt"
@@ -21,8 +21,8 @@
   "linux": {
     "target": [
       "zip",
-      "AppImage",
-      "deb"
+      "deb",
+      "appimage"
     ],
     "maintainer": "Alex313031",
     "vendor": "Alex313031",
@@ -40,8 +40,8 @@
   "win": {
     "target": [
       "zip",
-      "nsis",
-      "portable"
+      "portable",
+      "nsis"
     ],
     "publisherName": "Alex313031",
     "executableName": "universal_paperclips",
@@ -50,13 +50,22 @@
   "nsis": {
     "shortcutName": "Universal Paperclips",
     "artifactName": "universal_paperclips_setup_${version}_${arch}.${ext}",
+    "uninstallDisplayName": "Universal Paperclips ${version}",
     "deleteAppDataOnUninstall": false,
-    "uninstallDisplayName": "Universal Paperclips ${version}"
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
   },
   "portable": {
     "artifactName": "universal_paperclips_portable_${version}_${arch}.${ext}"
   },
   "mac": {
-    "category": "public.app-category.game"
+    "category": "public.app-category.games",
+    "icon": "build/icon.icns",
+    "darkModeSupport": true,
+    "artifactName": "universal_paperclips_${version}_macos_${arch}.${ext}",
+    "target": [
+      "dmg",
+      "zip"
+    ]
   }
 }
