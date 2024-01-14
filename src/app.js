@@ -151,7 +151,14 @@ function createWindow() {
         label: 'View Humans.txt',
         accelerator: 'CmdorCtrl+Alt+Shift+H',
         click() {
-          const humansWindow = new BrowserWindow({ width: 400, height: 450, useContentSize: true, title: 'humans.txt', darkTheme: true });
+          const humansWindow = new BrowserWindow({
+            width: 400,
+            height: 450,
+            useContentSize: true,
+            autoHideMenuBar: true,
+            title: 'humans.txt',
+            darkTheme: true
+          });
           humansWindow.loadFile('./humans.txt');
           electronLog.info('Opened humans.txt :)');
         }
@@ -160,7 +167,14 @@ function createWindow() {
         label: 'View License',
         accelerator: 'CmdorCtrl+Alt+Shift+L',
         click() {
-          const licenseWindow = new BrowserWindow({ width: 532, height: 632, useContentSize: true, title: 'License', darkTheme: true });
+          const licenseWindow = new BrowserWindow({
+            width: 532,
+            height: 632,
+            useContentSize: true,
+            autoHideMenuBar: true,
+            title: 'License',
+            darkTheme: true
+          });
           licenseWindow.loadFile('./license.md');
           electronLog.info('Opened license.md');
         }
@@ -173,6 +187,7 @@ function createWindow() {
             width: 350,
             height: 300,
             useContentSize: true,
+            autoHideMenuBar: true,
             title: 'About App',
             icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
             darkTheme: true,
