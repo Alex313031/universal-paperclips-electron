@@ -24,6 +24,7 @@
       "deb",
       "appimage"
     ],
+    "icon": "build/icons",
     "maintainer": "Alex313031",
     "vendor": "Alex313031",
     "synopsis": "An incremental game about an AI created to produce paperclips. Electron native app port.",
