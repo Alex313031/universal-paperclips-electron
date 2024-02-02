@@ -188,6 +188,7 @@ function createWindow() {
             height: 300,
             useContentSize: true,
             autoHideMenuBar: true,
+            skipTaskbar: true,
             title: 'About App',
             icon: isWin ? path.join(__dirname, 'icon.ico') : path.join(__dirname, 'icon64.png'),
             darkTheme: true,

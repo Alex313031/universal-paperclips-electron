@@ -3,6 +3,7 @@
   "asar": true,
   "productName": "Universal Paperclips",
   "appId": "com.alex313031.universalpaperclips",
+  "copyright": "Copyright © 2024 Alex313031",
   "generateUpdatesFilesForAllChannels": false,
   "directories": {
       "app": "src",
