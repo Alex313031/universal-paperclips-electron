@@ -7,6 +7,9 @@ const url = require('url');
 // Initialize Electron remote module
 require('@electron/remote/main').initialize();
 
+// Restrict main.log size to 100Kb
+electronLog.transports.file.maxSize = 1024 * 100;
+
 // Get app details from package.json
 const appName = app.getName();
 const appVersion = app.getVersion();
