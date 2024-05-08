@@ -24,7 +24,7 @@ const v8Ver = process.versions.v8;
 const isWin = process.platform === 'win32';
 const isMac = process.platform === 'darwin';
 
-function createWindow() {
+async function createWindow() {
   const mainWindow = new BrowserWindow({
     title: 'Universal Paperclips',
     resizable: true,
@@ -36,16 +36,11 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
-      contextIsolation: false,
-      sandbox: false,
       experimentalFeatures: true,
       webviewTag: true,
-      devTools: true,
-      // Preload before renderer processes
-      preload: path.join(__dirname, 'preload.js')
+      devTools: true
     }
   });
-  require('@electron/remote/main').enable(mainWindow.webContents);
   Menu.setApplicationMenu(Menu.buildFromTemplate([
   {
     role: 'fileMenu',
@@ -155,8 +150,8 @@ function createWindow() {
         accelerator: 'CmdorCtrl+Alt+Shift+H',
         click() {
           const humansWindow = new BrowserWindow({
-            width: 400,
-            height: 450,
+            width: 402,
+            height: 452,
             useContentSize: true,
             autoHideMenuBar: true,
             title: 'humans.txt',
@@ -187,8 +182,8 @@ function createWindow() {
         accelerator: 'CmdorCtrl+Alt+A',
         click() {
           const aboutWindow = new BrowserWindow({
-            width: 350,
-            height: 300,
+            width: 360,
+            height: 332,
             useContentSize: true,
             autoHideMenuBar: true,
             skipTaskbar: true,
@@ -224,7 +219,8 @@ function createWindow() {
 }
 
 contextMenu({
-  showSelectAll: false,
+  // Chromium context menu defaults
+  showSelectAll: true,
   showCopyImage: true,
   showCopyImageAddress: true,
   showSaveImageAs: true,
@@ -234,8 +230,8 @@ contextMenu({
   showSaveLinkAs: true,
   showInspectElement: true,
   showLookUpSelection: true,
-  showSearchWithGoogle: true,
-  prepend: (defaultActions, parameters, browserWindow) => [
+  showSearchWithGoogle: false,
+  prepend: (defaultActions, parameters) => [
   {
     label: 'Open Link in New Window',
     // Only show it when right-clicking a link
@@ -247,6 +243,7 @@ contextMenu({
         width: 1024,
         height: 700,
         useContentSize: true,
+        darkTheme: true,
         webPreferences: {
           nodeIntegration: false,
           nodeIntegrationInWorker: false,
@@ -259,6 +256,29 @@ contextMenu({
     }
   },
   {
+    label: "Search with Google",
+    // Only show it when right-clicking text
+    visible: parameters.selectionText.trim().length > 0,
+    click: () => {
+      const queryURL = `${encodeURIComponent(parameters.selectionText)}`
+      const searchURL = `https://google.com/search?q=${encodeURIComponent(parameters.selectionText)}`;
+      const searchWin = new BrowserWindow({
+        width: 1024,
+        height: 700,
+        useContentSize: true,
+        darkTheme: true,
+        webPreferences: {
+          nodeIntegration: false,
+          nodeIntegrationInWorker: false,
+          experimentalFeatures: true,
+          devTools: true
+        }
+      });
+      searchWin.loadURL(searchURL);
+      electronLog.info('Searched for "' + queryURL + '" on Google');
+    }
+  },
+  {
     label: 'Open Image in New Window',
     // Only show it when right-clicking an image
     visible: parameters.mediaType === 'image',
@@ -268,6 +288,7 @@ contextMenu({
       const imgWin = new BrowserWindow({
         title: imgTitle,
         useContentSize: true,
+        darkTheme: true,
         webPreferences: {
           nodeIntegration: false,
           nodeIntegrationInWorker: false,
@@ -289,6 +310,7 @@ contextMenu({
       const vidWin = new BrowserWindow({
         title: vidTitle,
         useContentSize: true,
+        darkTheme: true,
         webPreferences: {
           nodeIntegration: false,
           nodeIntegrationInWorker: false,
@@ -302,7 +324,9 @@ contextMenu({
   }]
 });
 
-app.whenReady().then(createWindow);
+app.whenReady().then(async() => {
+  createWindow();
+});
 
 electronLog.info('Welcome to ' + appName + ' v' + appVersion);
 electronLog.info('Electron Version: ' + [ electronVer ]);
@@ -310,8 +334,6 @@ electronLog.info('Chromium Version: ' + [ chromeVer ]);
 electronLog.info('NodeJS Version: ' + [ nodeVer ]);
 electronLog.info('V8 Version: ' + [ v8Ver ]);
 
-// app.commandLine.appendSwitch('enable-experimental-web-platform-features');
-app.commandLine.appendSwitch('allow-file-access-from-files');
 app.commandLine.appendSwitch('enable-local-file-accesses');
 app.commandLine.appendSwitch('enable-quic');
 app.commandLine.appendSwitch('enable-ui-devtools');

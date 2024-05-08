@@ -23,7 +23,8 @@
     "target": [
       "zip",
       "deb",
-      "appimage"
+      "appimage",
+      "rpm"
     ],
     "icon": "build/icons",
     "maintainer": "Alex313031",
