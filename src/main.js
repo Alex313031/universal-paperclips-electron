@@ -4698,7 +4698,8 @@ function refresh() {
 
 // SAVES AND LOADS
 
-function save() {
+function save(slotStr) {
+	if(!slotStr) slotStr = "";
     
     var projectsUses = [];
     var projectsFlags = [];
@@ -4978,15 +4979,15 @@ for(var i=0; i < activeProjects.length; i++){
     
         }
     
-    localStorage.setItem("saveGame",JSON.stringify(saveGame));
-    localStorage.setItem("saveProjectsUses",JSON.stringify(projectsUses));
-    localStorage.setItem("saveProjectsFlags",JSON.stringify(projectsFlags));
-    localStorage.setItem("saveProjectsActive",JSON.stringify(projectsActive));
-    localStorage.setItem("saveStratsActive",JSON.stringify(stratsActive));
+    localStorage.setItem("saveGame"+slotStr, JSON.stringify(saveGame));
+    localStorage.setItem("saveProjectsUses"+slotStr, JSON.stringify(projectsUses));
+    localStorage.setItem("saveProjectsFlags"+slotStr, JSON.stringify(projectsFlags));
+    localStorage.setItem("saveProjectsActive"+slotStr, JSON.stringify(projectsActive));
+    localStorage.setItem("saveStratsActive"+slotStr, JSON.stringify(stratsActive));
     
 }
 
-function save1() {
+/* function save1() {
     
     var projectsUses = [];
     var projectsFlags = [];
@@ -5562,15 +5563,16 @@ for(var i=0; i < activeProjects.length; i++){
     localStorage.setItem("saveProjectsActive2",JSON.stringify(projectsActive));
     localStorage.setItem("saveStratsActive2",JSON.stringify(stratsActive));
     
-}
+} */
 
-function load() {
+function load(slotStr) {
+	if(!slotStr) slotStr = "";
     
-    var loadGame = JSON.parse(localStorage.getItem("saveGame"));
-    var loadProjectsUses = JSON.parse(localStorage.getItem("saveProjectsUses"));
-    var loadProjectsFlags = JSON.parse(localStorage.getItem("saveProjectsFlags"));
-    var loadProjectsActive = JSON.parse(localStorage.getItem("saveProjectsActive"));
-    var loadStratsActive = JSON.parse(localStorage.getItem("saveStratsActive"));
+    var loadGame = JSON.parse(localStorage.getItem("saveGame"+slotStr));
+    var loadProjectsUses = JSON.parse(localStorage.getItem("saveProjectsUses"+slotStr));
+    var loadProjectsFlags = JSON.parse(localStorage.getItem("saveProjectsFlags"+slotStr));
+    var loadProjectsActive = JSON.parse(localStorage.getItem("saveProjectsActive"+slotStr));
+    var loadStratsActive = JSON.parse(localStorage.getItem("saveStratsActive"+slotStr));
     
     for(var i=0; i < allStrats.length; i++){
     
@@ -5871,7 +5873,7 @@ function load() {
     
 }
 
-function load1() {
+/* function load1() {
     
     var loadGame = JSON.parse(localStorage.getItem("saveGame1"));
     var loadProjectsUses = JSON.parse(localStorage.getItem("saveProjectsUses1"));
@@ -6479,7 +6481,7 @@ function load2() {
     
     refresh();
     
-}
+} */
 
 function reset() {
     localStorage.removeItem("saveGame");
