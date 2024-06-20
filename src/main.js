@@ -322,6 +322,8 @@ function cacheDOMElements(){
     clipmakerRateElement =              document.getElementById("clipmakerRate");
     clipmakerRate2Element =             document.getElementById("clipmakerRate2");
 
+	resetButtonElement =	document.getElementById("resetButton");
+
 
     stockSymbolElements.push(document.getElementById("stock1Symbol"));
     stockAmountElements.push(document.getElementById("stock1Amount"));
@@ -677,6 +679,8 @@ var transWireElement;
 var nanoWireElement;
 var clipsElement;
 var unsoldClipsElement;
+
+var resetButtonElement;
 
 var stockSymbolElements = [];
 var stockAmountElements = [];
@@ -4675,6 +4679,12 @@ function refresh() {
     updatePowPrices(); 
     
     
+	if(prestigeS > 0 || prestigeU > 0){
+		resetButtonElement.style.display = "";
+	}
+	else {
+		resetButtonElement.style.display = "none";
+	}
     
     // HOT FIXES
 
@@ -4977,8 +4987,13 @@ for(var i=0; i < activeProjects.length; i++){
         probeLaunchLevel: probeLaunchLevel,
         probeCost: probeCost
     
-        }
-    
+	};
+	
+	var savePrestige = {
+		prestigeU: prestigeU,
+		prestigeS: prestigeS
+	};
+	localStorage.setItem("savePrestige"+slotStr, JSON.stringify(savePrestige));
     localStorage.setItem("saveGame"+slotStr, JSON.stringify(saveGame));
     localStorage.setItem("saveProjectsUses"+slotStr, JSON.stringify(projectsUses));
     localStorage.setItem("saveProjectsFlags"+slotStr, JSON.stringify(projectsFlags));
@@ -5567,7 +5582,13 @@ for(var i=0; i < activeProjects.length; i++){
 
 function load(slotStr) {
 	if(!slotStr) slotStr = "";
-    
+	
+	if (localStorage.getItem("savePrestige"+slotStr) != null) {
+		var loadPrestige = JSON.parse(localStorage.getItem("savePrestige"+slotStr));
+		
+		prestigeU = parseInt(loadPrestige.prestigeU, 10);
+		prestigeS = parseInt(loadPrestige.prestigeS, 10);
+	}
     var loadGame = JSON.parse(localStorage.getItem("saveGame"+slotStr));
     var loadProjectsUses = JSON.parse(localStorage.getItem("saveProjectsUses"+slotStr));
     var loadProjectsFlags = JSON.parse(localStorage.getItem("saveProjectsFlags"+slotStr));
@@ -6492,6 +6513,12 @@ function reset() {
     location.reload();
 }
 
+function resetAll(){
+	//fresh start
+	resetPrestige();
+	reset();
+}
+
 function loadPrestige() {
     
         var loadPrestige = JSON.parse(localStorage.getItem("savePrestige"));
@@ -6504,6 +6531,7 @@ function saveToFile() {
     save();
 
     const saveData = {
+        savePrestige: JSON.parse(localStorage.getItem("savePrestige")), //save universe/sim level
         saveGame: JSON.parse(localStorage.getItem("saveGame")),
         saveProjectsUses: JSON.parse(localStorage.getItem("saveProjectsUses")),
         saveProjectsFlags: JSON.parse(localStorage.getItem("saveProjectsFlags")),
@@ -6540,6 +6568,9 @@ function loadFromFile() {
             const saveData = JSON.parse(jsonData);
 
             // Update localStorage with the loaded data
+			if (saveData.savePrestige != null) {//safety check for old saves
+				localStorage.setItem("savePrestige", JSON.stringify(saveData.savePrestige)); //load universe/sim level
+			}
             localStorage.setItem("saveGame", JSON.stringify(saveData.saveGame));
             localStorage.setItem("saveProjectsUses", JSON.stringify(saveData.saveProjectsUses));
             localStorage.setItem("saveProjectsFlags", JSON.stringify(saveData.saveProjectsFlags));
