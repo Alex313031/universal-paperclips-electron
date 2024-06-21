@@ -716,10 +716,17 @@ function adjustWirePrice(){
 function toggleWireBuyer(){
     if (wireBuyerStatus==1){
         wireBuyerStatus=0;
-        wireBuyerStatusElement.innerHTML = "OFF";
     } else {
         wireBuyerStatus=1;
+    }
+	updateWireBuyerStatus();
+}
+
+function updateWireBuyerStatus(){
+    if (wireBuyerStatus==1){
         wireBuyerStatusElement.innerHTML = "ON";
+    } else {
+        wireBuyerStatusElement.innerHTML = "OFF";
     }
 }
 
@@ -1713,7 +1720,7 @@ var winnerPtr = 0;
 var placeScore = 0;
 var showScore = 0;
 var high = 0;
-var pick = 10;
+var pick = -1;
 var yomi = 0;
 var yomiBoost = 1;
 
@@ -1975,10 +1982,17 @@ function generateGrid(){
 function toggleAutoTourney(){
     if (autoTourneyStatus==1){
         autoTourneyStatus=0;
-        autoTourneyStatusElement.innerHTML = "OFF";
     } else {
         autoTourneyStatus=1;
+    }
+	updateAutoTourneyStatus();
+}
+
+function updateAutoTourneyStatus(){
+    if (autoTourneyStatus==1){
         autoTourneyStatusElement.innerHTML = "ON";
+    } else {
+        autoTourneyStatusElement.innerHTML = "OFF";
     }
 }
 
@@ -2110,7 +2124,7 @@ function calculateShowScore(){
 
 function declareWinner(){
     
-    if (pick<10){
+    if (pick>-1){
         
        var bB = 0;  
        var w = "strats";    
@@ -2187,7 +2201,7 @@ function populateTourneyReport(){  //m@ make results array
             
             tourneyResultsElements[i].innerHTML=(i+1)+". "+results[i].name+": "+results[i].currentScore; 
             
-        if (pick<10){    
+        if (pick>-1){    
             
         if (results[i].name == strats[pick].name) {
             tourneyResultsElements[i].style.fontWeight = "bold";    
@@ -2319,7 +2333,7 @@ function round(roundNum){
     
 window.setInterval(function(){
     
-pick = stratPickerElement.value;
+	pick = parseInt(stratPickerElement.value, 10);
     
 }, 100);
 
@@ -3310,10 +3324,10 @@ function cheatPrestigeU(){
         prestigeU++;
         var savePrestige = {
         prestigeU: prestigeU,
-        prestigeS: prestigeS,
+        prestigeS: prestigeS
         }
         localStorage.setItem("savePrestige",JSON.stringify(savePrestige));
-    
+    refresh();
 }
 
 function cheatPrestigeS(){
@@ -3321,10 +3335,10 @@ function cheatPrestigeS(){
         prestigeS++;
         var savePrestige = {
         prestigeU: prestigeU,
-        prestigeS: prestigeS,
+        prestigeS: prestigeS
         }
         localStorage.setItem("savePrestige",JSON.stringify(savePrestige));
-    
+    refresh();
 }
 
 function setB(){
@@ -4615,7 +4629,7 @@ function refresh() {
     
     ////////
     
-    
+    wireElement.innerHTML = formatWithCommas(Math.floor(wire));
     driftersKilledElement.innerHTML = spellf(driftersKilled);
     availableMatterDisplayElement.innerHTML = spellf(availableMatter);    
     honorDisplayElement.innerHTML = formatWithCommas(Math.round(honor));
@@ -4685,6 +4699,27 @@ function refresh() {
 	else {
 		resetButtonElement.style.display = "none";
 	}
+	
+	//update toggleable and selectable stuff
+	updateWireBuyerStatus();
+	updateAutoTourneyStatus();
+	
+	pick = parseInt(pick, 10);
+	if(pick+1<stratPickerElement.options.length){
+		stratPickerElement.options[pick+1].selected = true;
+	}
+	
+	//riskiness-> 7:"low", 5:"med", 1:"hi"
+	var investStratOptIndex = 0;
+	if (riskiness == 5){
+		investStratOptIndex = 1;
+	} else if (riskiness == 1) {
+		investStratOptIndex = 2;
+	}
+	investStratElement.options[investStratOptIndex].selected = true;
+	
+	sliderElement.value = sliderPos;
+	
     
     // HOT FIXES
 
