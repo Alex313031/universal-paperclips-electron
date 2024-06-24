@@ -900,6 +900,7 @@ function manageProjects(){
 
 
 function displayProjects(project){
+	if(document.getElementById(project.id)) return;
     
     project.element = document.createElement("button");
 project.element.setAttribute("id", project.id);
@@ -5636,14 +5637,22 @@ function load(slotStr) {
         
     }
     
-    for(var i=1; i<allStrats.length; i++){
+	
+	if (stratPickerElement.children.length > 1) {
+		for(var i=stratPickerElement.children.length-1; i>0; i--){
+			stratPickerElement.children[i].remove();
+		}
+	}
+	
+	strats = [];
+    for(var i=0; i<allStrats.length; i++){
         
         if (allStrats[i].active == 1){
         
             strats.push(allStrats[i]);
 
             var el = document.createElement("option");
-            el.textContent = strats[i].name;
+            el.textContent = allStrats[i].name;
             el.value = i;
             stratPickerElement.appendChild(el);
             
@@ -5911,6 +5920,11 @@ function load(slotStr) {
         
     }
     
+
+	for(var i=projectListTopElement.children.length-1; i>=0; i--){
+		projectListTopElement.children[i].remove();
+	}
+	activeProjects = [];
     for(var i=0; i < projects.length; i++){
     
     if (loadProjectsActive.indexOf(projects[i].id)>=0){
