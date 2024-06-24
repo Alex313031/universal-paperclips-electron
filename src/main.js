@@ -322,6 +322,8 @@ function cacheDOMElements(){
     clipmakerRateElement =              document.getElementById("clipmakerRate");
     clipmakerRate2Element =             document.getElementById("clipmakerRate2");
 
+	resetButtonElement =	document.getElementById("resetButton");
+
 
     stockSymbolElements.push(document.getElementById("stock1Symbol"));
     stockAmountElements.push(document.getElementById("stock1Amount"));
@@ -678,6 +680,8 @@ var nanoWireElement;
 var clipsElement;
 var unsoldClipsElement;
 
+var resetButtonElement;
+
 var stockSymbolElements = [];
 var stockAmountElements = [];
 var stockPriceElements = [];
@@ -712,10 +716,17 @@ function adjustWirePrice(){
 function toggleWireBuyer(){
     if (wireBuyerStatus==1){
         wireBuyerStatus=0;
-        wireBuyerStatusElement.innerHTML = "OFF";
     } else {
         wireBuyerStatus=1;
+    }
+	updateWireBuyerStatus();
+}
+
+function updateWireBuyerStatus(){
+    if (wireBuyerStatus==1){
         wireBuyerStatusElement.innerHTML = "ON";
+    } else {
+        wireBuyerStatusElement.innerHTML = "OFF";
     }
 }
 
@@ -889,6 +900,7 @@ function manageProjects(){
 
 
 function displayProjects(project){
+	if(document.getElementById(project.id)) return;
     
     project.element = document.createElement("button");
 project.element.setAttribute("id", project.id);
@@ -1709,7 +1721,7 @@ var winnerPtr = 0;
 var placeScore = 0;
 var showScore = 0;
 var high = 0;
-var pick = 10;
+var pick = -1;
 var yomi = 0;
 var yomiBoost = 1;
 
@@ -1971,10 +1983,17 @@ function generateGrid(){
 function toggleAutoTourney(){
     if (autoTourneyStatus==1){
         autoTourneyStatus=0;
-        autoTourneyStatusElement.innerHTML = "OFF";
     } else {
         autoTourneyStatus=1;
+    }
+	updateAutoTourneyStatus();
+}
+
+function updateAutoTourneyStatus(){
+    if (autoTourneyStatus==1){
         autoTourneyStatusElement.innerHTML = "ON";
+    } else {
+        autoTourneyStatusElement.innerHTML = "OFF";
     }
 }
 
@@ -1999,6 +2018,7 @@ function newTourney(){
     generateGrid();
     
     btnRunTournamentElement.disabled = false;
+    stratPickerElement.disabled = false;
     vertStratElement.innerHTML = "&nbsp";
     horizStratElement.innerHTML = "&nbsp";
     tourneyDisplayElement.innerHTML = "Pick strategy, run tournament, gain yomi";
@@ -2008,6 +2028,7 @@ function newTourney(){
 
 function runTourney(){
     btnRunTournamentElement.disabled = true;
+    stratPickerElement.disabled = true;
     if (currentRound < rounds){
     round(currentRound);
     } else {
@@ -2106,7 +2127,7 @@ function calculateShowScore(){
 
 function declareWinner(){
     
-    if (pick<10){
+    if (pick>-1){
         
        var bB = 0;  
        var w = "strats";    
@@ -2183,7 +2204,7 @@ function populateTourneyReport(){  //m@ make results array
             
             tourneyResultsElements[i].innerHTML=(i+1)+". "+results[i].name+": "+results[i].currentScore; 
             
-        if (pick<10){    
+        if (pick>-1){    
             
         if (results[i].name == strats[pick].name) {
             tourneyResultsElements[i].style.fontWeight = "bold";    
@@ -2313,11 +2334,14 @@ function round(roundNum){
     }
     }
     
-window.setInterval(function(){
+/* window.setInterval(function(){
     
-pick = stratPickerElement.value;
+	pick = parseInt(stratPickerElement.value, 10);
     
-}, 100);
+}, 100); */
+function stratPick(){
+	pick = parseInt(stratPickerElement.value, 10);
+}
 
 
 //--------------------------------------------------------------------------------
@@ -3306,10 +3330,10 @@ function cheatPrestigeU(){
         prestigeU++;
         var savePrestige = {
         prestigeU: prestigeU,
-        prestigeS: prestigeS,
+        prestigeS: prestigeS
         }
         localStorage.setItem("savePrestige",JSON.stringify(savePrestige));
-    
+    refresh();
 }
 
 function cheatPrestigeS(){
@@ -3317,10 +3341,10 @@ function cheatPrestigeS(){
         prestigeS++;
         var savePrestige = {
         prestigeU: prestigeU,
-        prestigeS: prestigeS,
+        prestigeS: prestigeS
         }
         localStorage.setItem("savePrestige",JSON.stringify(savePrestige));
-    
+    refresh();
 }
 
 function setB(){
@@ -4611,7 +4635,7 @@ function refresh() {
     
     ////////
     
-    
+    wireElement.innerHTML = formatWithCommas(Math.floor(wire));
     driftersKilledElement.innerHTML = spellf(driftersKilled);
     availableMatterDisplayElement.innerHTML = spellf(availableMatter);    
     honorDisplayElement.innerHTML = formatWithCommas(Math.round(honor));
@@ -4675,6 +4699,34 @@ function refresh() {
     updatePowPrices(); 
     
     
+	if(prestigeS > 0 || prestigeU > 0){
+		resetButtonElement.style.display = "";
+	}
+	else {
+		resetButtonElement.style.display = "none";
+	}
+	
+	//update toggleable and selectable stuff
+	updateWireBuyerStatus();
+	updateAutoTourneyStatus();
+	
+	pick = parseInt(pick, 10);
+	var stratOptIndex = pick + 1;
+	if(stratOptIndex >= 0 && stratOptIndex < stratPickerElement.options.length){
+		stratPickerElement.options[stratOptIndex].selected = true;
+	}
+	
+	//riskiness-> 7:"low", 5:"med", 1:"hi"
+	var investStratOptIndex = 0;
+	if (riskiness == 5){
+		investStratOptIndex = 1;
+	} else if (riskiness == 1) {
+		investStratOptIndex = 2;
+	}
+	investStratElement.options[investStratOptIndex].selected = true;
+	
+	sliderElement.value = sliderPos;
+	
     
     // HOT FIXES
 
@@ -4698,7 +4750,8 @@ function refresh() {
 
 // SAVES AND LOADS
 
-function save() {
+function save(slotStr) {
+	if(!slotStr) slotStr = "";
     
     var projectsUses = [];
     var projectsFlags = [];
@@ -4976,17 +5029,22 @@ for(var i=0; i < activeProjects.length; i++){
         probeLaunchLevel: probeLaunchLevel,
         probeCost: probeCost
     
-        }
-    
-    localStorage.setItem("saveGame",JSON.stringify(saveGame));
-    localStorage.setItem("saveProjectsUses",JSON.stringify(projectsUses));
-    localStorage.setItem("saveProjectsFlags",JSON.stringify(projectsFlags));
-    localStorage.setItem("saveProjectsActive",JSON.stringify(projectsActive));
-    localStorage.setItem("saveStratsActive",JSON.stringify(stratsActive));
+	};
+	
+	var savePrestige = {
+		prestigeU: prestigeU,
+		prestigeS: prestigeS
+	};
+	localStorage.setItem("savePrestige"+slotStr, JSON.stringify(savePrestige));
+    localStorage.setItem("saveGame"+slotStr, JSON.stringify(saveGame));
+    localStorage.setItem("saveProjectsUses"+slotStr, JSON.stringify(projectsUses));
+    localStorage.setItem("saveProjectsFlags"+slotStr, JSON.stringify(projectsFlags));
+    localStorage.setItem("saveProjectsActive"+slotStr, JSON.stringify(projectsActive));
+    localStorage.setItem("saveStratsActive"+slotStr, JSON.stringify(stratsActive));
     
 }
 
-function save1() {
+/* function save1() {
     
     var projectsUses = [];
     var projectsFlags = [];
@@ -5562,15 +5620,22 @@ for(var i=0; i < activeProjects.length; i++){
     localStorage.setItem("saveProjectsActive2",JSON.stringify(projectsActive));
     localStorage.setItem("saveStratsActive2",JSON.stringify(stratsActive));
     
-}
+} */
 
-function load() {
-    
-    var loadGame = JSON.parse(localStorage.getItem("saveGame"));
-    var loadProjectsUses = JSON.parse(localStorage.getItem("saveProjectsUses"));
-    var loadProjectsFlags = JSON.parse(localStorage.getItem("saveProjectsFlags"));
-    var loadProjectsActive = JSON.parse(localStorage.getItem("saveProjectsActive"));
-    var loadStratsActive = JSON.parse(localStorage.getItem("saveStratsActive"));
+function load(slotStr) {
+	if(!slotStr) slotStr = "";
+	
+	if (localStorage.getItem("savePrestige"+slotStr) != null) {
+		var loadPrestige = JSON.parse(localStorage.getItem("savePrestige"+slotStr));
+		
+		prestigeU = parseInt(loadPrestige.prestigeU, 10);
+		prestigeS = parseInt(loadPrestige.prestigeS, 10);
+	}
+    var loadGame = JSON.parse(localStorage.getItem("saveGame"+slotStr));
+    var loadProjectsUses = JSON.parse(localStorage.getItem("saveProjectsUses"+slotStr));
+    var loadProjectsFlags = JSON.parse(localStorage.getItem("saveProjectsFlags"+slotStr));
+    var loadProjectsActive = JSON.parse(localStorage.getItem("saveProjectsActive"+slotStr));
+    var loadStratsActive = JSON.parse(localStorage.getItem("saveStratsActive"+slotStr));
     
     for(var i=0; i < allStrats.length; i++){
     
@@ -5578,14 +5643,22 @@ function load() {
         
     }
     
-    for(var i=1; i<allStrats.length; i++){
+	
+	if (stratPickerElement.children.length > 1) {
+		for(var i=stratPickerElement.children.length-1; i>0; i--){
+			stratPickerElement.children[i].remove();
+		}
+	}
+	
+	strats = [];
+    for(var i=0; i<allStrats.length; i++){
         
         if (allStrats[i].active == 1){
         
             strats.push(allStrats[i]);
 
             var el = document.createElement("option");
-            el.textContent = strats[i].name;
+            el.textContent = allStrats[i].name;
             el.value = i;
             stratPickerElement.appendChild(el);
             
@@ -5853,6 +5926,11 @@ function load() {
         
     }
     
+
+	for(var i=projectListTopElement.children.length-1; i>=0; i--){
+		projectListTopElement.children[i].remove();
+	}
+	activeProjects = [];
     for(var i=0; i < projects.length; i++){
     
     if (loadProjectsActive.indexOf(projects[i].id)>=0){
@@ -5871,7 +5949,7 @@ function load() {
     
 }
 
-function load1() {
+/* function load1() {
     
     var loadGame = JSON.parse(localStorage.getItem("saveGame1"));
     var loadProjectsUses = JSON.parse(localStorage.getItem("saveProjectsUses1"));
@@ -6479,7 +6557,7 @@ function load2() {
     
     refresh();
     
-}
+} */
 
 function reset() {
     localStorage.removeItem("saveGame");
@@ -6488,6 +6566,12 @@ function reset() {
     localStorage.removeItem("saveProjectsActive");
     localStorage.removeItem("saveStratsActive");
     location.reload();
+}
+
+function resetAll(){
+	//fresh start
+	resetPrestige();
+	reset();
 }
 
 function loadPrestige() {
@@ -6502,6 +6586,7 @@ function saveToFile() {
     save();
 
     const saveData = {
+        savePrestige: JSON.parse(localStorage.getItem("savePrestige")), //save universe/sim level
         saveGame: JSON.parse(localStorage.getItem("saveGame")),
         saveProjectsUses: JSON.parse(localStorage.getItem("saveProjectsUses")),
         saveProjectsFlags: JSON.parse(localStorage.getItem("saveProjectsFlags")),
@@ -6538,6 +6623,9 @@ function loadFromFile() {
             const saveData = JSON.parse(jsonData);
 
             // Update localStorage with the loaded data
+			if (saveData.savePrestige != null) {//safety check for old saves
+				localStorage.setItem("savePrestige", JSON.stringify(saveData.savePrestige)); //load universe/sim level
+			}
             localStorage.setItem("saveGame", JSON.stringify(saveData.saveGame));
             localStorage.setItem("saveProjectsUses", JSON.stringify(saveData.saveProjectsUses));
             localStorage.setItem("saveProjectsFlags", JSON.stringify(saveData.saveProjectsFlags));

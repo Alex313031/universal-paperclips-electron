@@ -311,14 +311,18 @@
   </div>
 
   <br />
+  <br />
 
-  <button class ="button2" id ="save1Button" onclick="save1()">SAVE SLOT 1</button>
-  <button class ="button2" id ="load1Button" onclick="load1()">LOAD SLOT 1</button><br />
-  <button class ="button2" id ="save2Button" onclick="save2()">SAVE SLOT 2</button>
-  <button class ="button2" id ="load2Button" onclick="load2()">LOAD SLOT 2</button><br />
+  <button class ="button2" id ="save1Button" onclick="save(1)">SAVE SLOT 1</button>
+  <button class ="button2" id ="load1Button" onclick="load(1)">LOAD SLOT 1</button><br />
+  <button class ="button2" id ="save2Button" onclick="save(2)">SAVE SLOT 2</button>
+  <button class ="button2" id ="load2Button" onclick="load(2)">LOAD SLOT 2</button><br />
   <button class ="button2" id ="saveToFile" onclick="saveToFile()" >SAVE TO FILE</button>
   <button class ="button2" id ="saveToFile" onclick="loadFromFile()" >LOAD FROM FILE</button><br />
-  <button class ="button2" id ="resetButton" onclick="reset()">RESET ALL PROGRESS</button><br />
+  <p class="clean">Note: reset before loading</p>
+  <br />
+  <button class ="button2" id ="resetAllButton" onclick="resetAll()">RESET ALL PROGRESS</button><br />
+  <button class ="button2" id ="resetButton" onclick="reset()" style="display:none">RESET PROGRESS</button><br />
 
 <!--
   <button id ="freeClipsButton" onclick="cheatClips()">Free Clips</button><br />
@@ -542,8 +546,8 @@
   <p class=engineText>
      <b>Strategic Modeling</b>
 
-     <select id = "stratPicker">
-    <option value="10">Pick a Strat</option>
+     <select id = "stratPicker" onchange="stratPick()">
+    <option value="-1" disabled>Pick a Strat</option>
     <option value="0">RANDOM</option>
       </select>      
   <button class = "button2" id = "btnRunTournament"
