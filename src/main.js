@@ -2018,6 +2018,7 @@ function newTourney(){
     generateGrid();
     
     btnRunTournamentElement.disabled = false;
+    stratPickerElement.disabled = false;
     vertStratElement.innerHTML = "&nbsp";
     horizStratElement.innerHTML = "&nbsp";
     tourneyDisplayElement.innerHTML = "Pick strategy, run tournament, gain yomi";
@@ -2027,6 +2028,7 @@ function newTourney(){
 
 function runTourney(){
     btnRunTournamentElement.disabled = true;
+    stratPickerElement.disabled = true;
     if (currentRound < rounds){
     round(currentRound);
     } else {
@@ -2332,11 +2334,14 @@ function round(roundNum){
     }
     }
     
-window.setInterval(function(){
+/* window.setInterval(function(){
     
 	pick = parseInt(stratPickerElement.value, 10);
     
-}, 100);
+}, 100); */
+function stratPick(){
+	pick = parseInt(stratPickerElement.value, 10);
+}
 
 
 //--------------------------------------------------------------------------------
@@ -4706,8 +4711,9 @@ function refresh() {
 	updateAutoTourneyStatus();
 	
 	pick = parseInt(pick, 10);
-	if(pick+1<stratPickerElement.options.length){
-		stratPickerElement.options[pick+1].selected = true;
+	var stratOptIndex = pick + 1;
+	if(stratOptIndex >= 0 && stratOptIndex < stratPickerElement.options.length){
+		stratPickerElement.options[stratOptIndex].selected = true;
 	}
 	
 	//riskiness-> 7:"low", 5:"med", 1:"hi"
