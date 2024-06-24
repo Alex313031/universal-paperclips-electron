@@ -546,8 +546,8 @@
   <p class=engineText>
      <b>Strategic Modeling</b>
 
-     <select id = "stratPicker">
-    <option value="-1">Pick a Strat</option>
+     <select id = "stratPicker" onchange="stratPick()">
+    <option value="-1" disabled>Pick a Strat</option>
     <option value="0">RANDOM</option>
       </select>      
   <button class = "button2" id = "btnRunTournament"
