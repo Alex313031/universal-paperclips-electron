@@ -2026,6 +2026,15 @@ function newTourney(){
     
 }
 
+function runTourneyStart(){
+	stratPick();
+	if(!(pick > -1 && pick < strats.length)){
+		blink(stratPickerElement);
+		return;
+	}
+	runTourney();
+}
+
 function runTourney(){
     btnRunTournamentElement.disabled = true;
     stratPickerElement.disabled = true;
@@ -4679,7 +4688,7 @@ function refresh() {
     prestigeUcounterElement.innerHTML=prestigeU+1;
     prestigeScounterElement.innerHTML=prestigeS+1;
     newTourneyCostElement.innerHTML = formatWithCommas(tourneyCost);
-    tourneyInProg = 0;
+    // tourneyInProg = 0;
     maxTrustDisplayElement.innerHTML                 = formatWithCommas(maxTrust);
     victoryDivElement.style.visibility               = "hidden";
     probeTrustCostDisplayElement.innerHTML           = formatWithCommas(probeTrustCost);
@@ -4714,6 +4723,10 @@ function refresh() {
 	var stratOptIndex = pick + 1;
 	if(stratOptIndex >= 0 && stratOptIndex < stratPickerElement.options.length){
 		stratPickerElement.options[stratOptIndex].selected = true;
+	}
+	if(tourneyInProg == 1){
+		generateGrid();
+		runTourney();
 	}
 	
 	//riskiness-> 7:"low", 5:"med", 1:"hi"
@@ -4995,6 +5008,7 @@ for(var i=0; i < activeProjects.length; i++){
         pick: pick,
         yomi: yomi,
         yomiBoost: yomiBoost,
+		strats: strats,
         
         probeSpeed: probeSpeed,
         probeNav: probeNav,
@@ -5665,6 +5679,13 @@ function load(slotStr) {
             }
             
         }
+	if(loadGame.strats) {//safety check for old saves
+		var loaded_strats = loadGame.strats;
+		for(var i=0; i<strats.length; i++){
+			strats[i].currentPos = loaded_strats[i].currentPos;
+			strats[i].currentScore = loaded_strats[i].currentScore;
+		}
+	}
     
         resetFlag = loadGame.resetFlag;
     
